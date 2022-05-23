@@ -1,0 +1,82 @@
+{% extends base %}
+
+<!-- goes in body -->
+{% block postamble %}
+<style>
+.lockable, .lockable.filter_multiselect .choices__inner {
+    opacity: 0.7;
+}
+.lockable.filter_multiselect {
+    opacity: 1;
+}
+.lockable.unlocked, .lockable.unlocked.filter_multiselect .choices__inner {
+    opacity: 1;
+}
+.lockable .icon-lock {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  display: none;
+  height: 20px;
+}
+.lockable .icon-lock:before {
+  width: 20px !important;
+  height: 100% !important;
+  top: ;
+}
+.lockable:hover .icon-lock {
+  display: block !important;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script>
+    function simulateClick(item) {
+      item.dispatchEvent(new PointerEvent('pointerdown', {bubbles: true}));
+      item.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      item.dispatchEvent(new PointerEvent('pointerup', {bubbles: true}));
+      item.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+      item.dispatchEvent(new MouseEvent('mouseout', {bubbles: true}));
+      item.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      item.dispatchEvent(new Event('change', {bubbles: true}));
+      return true;
+    }
+
+    function clickOption(select_element, index) {
+        var optionToClick = document.querySelector(select_element).children[index]; //choose any of the children
+        optionToClick.selected = true;
+        simulateClick(optionToClick); // manual click simulation
+    }
+    function toggle_lock() {
+        el = $(this).closest('.lockable');
+        el.toggleClass('unlocked');
+        <!--var classList = el.attr('class').split(/\s+/);-->
+        $.each(el.attr('class').split(/\s+/), function(index, item) {
+            if (item.indexOf('lock__') > -1) {
+                index = $('.lockable_items select option[value="' + item + '"]').index();
+                clickOption('.lockable_items select', index);
+                if (el.attr('class').indexOf('unlocked') > -1) {
+                    document.querySelectorAll(".unlock_btn button")[0].click();
+                } else {
+                    document.querySelectorAll(".lock_btn button")[0].click();
+                }
+            }
+        });
+    }
+    function add_locks() {
+        $('<span class="icon-link icon-lock"></span>').appendTo('.lockable.no_lock').click(toggle_lock);
+        $('.lockable.no_lock').removeClass('no_lock');
+    }
+</script>
+{% endblock %}
+
+<!-- goes in body -->
+{% block contents %}
+
+<div class="container">
+    {{ embed(roots.builder) }}
+    {{ embed(roots.lock_selector) }}
+    {{ embed(roots.preview_pane) }}
+</div>
+{{ embed(roots.builder_script) }}
+{% endblock %}
+
