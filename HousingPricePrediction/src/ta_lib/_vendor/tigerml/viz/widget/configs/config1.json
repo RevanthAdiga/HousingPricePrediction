@@ -1,0 +1,70 @@
+{
+  "no_of_children": 3,
+  "x_col.value": "Date",
+  "x_sort.value": "ASC",
+  "splitter.value": [
+    "Channel"
+  ],
+  "split_plots.value": false,
+  "debug.value": "OFF",
+  "children": [
+    {
+      "no_of_children": 0,
+      "load_data_file.value": null,
+      "children": []
+    },
+    {
+      "no_of_children": 2,
+      "combiner.value": "AND",
+      "children": [
+        {
+          "no_of_children": 0,
+          "col_name.value": "Channel",
+          "condition.value": "is in",
+          "values_input.value": [
+            "&flix",
+            "HBO",
+            "MNX"
+          ],
+          "children": []
+        },
+        {
+          "no_of_children": 0,
+          "col_name.value": "Channel Slot",
+          "condition.value": "is in",
+          "values_input.value": [
+            "1pm-3pm",
+            "3pm-5pm",
+            "5pm-7pm"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "no_of_children": 2,
+      "children": [
+        {
+          "no_of_children": 0,
+          "col_name.value": "TVR",
+          "agg_func.value": "mean",
+          "segment_by.value": "",
+          "sort_rule.value": "",
+          "axis.value": "left",
+          "plot_type.value": "line",
+          "children": []
+        },
+        {
+          "no_of_children": 0,
+          "col_name.value": "Duration",
+          "agg_func.value": "mean",
+          "segment_by.value": "",
+          "sort_rule.value": "",
+          "axis.value": "right",
+          "plot_type.value": "line",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
