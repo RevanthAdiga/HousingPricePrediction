@@ -10,7 +10,7 @@ from invoke import Collection, UnexpectedExit, task
 
 # Some default values
 PACKAGE_NAME = "ta_lib"
-ENV_PREFIX = "env-customer-x"
+ENV_PREFIX = "ta-lib"
 ENV_PREFIX_PYSPARK = "ta-lib-pyspark"
 NUM_RETRIES = 10
 SLEEP_TIME = 1
@@ -32,6 +32,8 @@ _TASK_COLLECTIONS = []
 # ---------
 # Utilities
 # ---------
+
+
 def _get_env_name(platform, env):
     # FIXME: do we need platform ?
     return f"{ENV_PREFIX}-{env}"
@@ -595,6 +597,12 @@ def validate_env(c, platform=PLATFORM, env=DEV_ENV):
         print("You are all good!")
 
 
+# task to evaluate codemetrics using radon
+@task(name="radon")
+def _radon(c=True, env=DEV_ENV):
+    c.run("radon cc notebooks/reference --include-ipynb")
+
+
 _create_task_collection(
     "test",
     run_qc_test,
@@ -602,6 +610,7 @@ _create_task_collection(
     run_unit_tests,
     run_all_tests,
     validate_env,
+    _radon,
 )
 
 
@@ -711,6 +720,7 @@ _create_task_collection(
 )
 
 
+# ----------------
 # --------------
 # Root namespace
 # --------------

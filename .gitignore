@@ -1,6 +1,8 @@
 # Ignore the .env file
 .env
 
+# ignore html files
+*.htm[l]
 
 # ignore log files
 **/logs/
@@ -13,6 +15,7 @@
 **/_version.py
 
 # Ignore dataset and model folders
+data
 artifacts
 mlruns
 
