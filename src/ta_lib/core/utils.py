@@ -775,7 +775,7 @@ def get_feature_names_from_column_transformer(col_trans):
         except AttributeError:
             names = raw_col_name
         if is_pipeline:
-            names = [f"{transformer_in_columns[0]}_{col_}" for col_ in names]
+            names = [f"{col_}" for col_ in names]
         col_name.extend(names)
 
     return col_name
